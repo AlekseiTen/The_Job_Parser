@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import requests
-from vacancy import Vacancy
+from src.vacancy import Vacancy
 
 
 class Parser(ABC):
@@ -19,7 +19,7 @@ class Parser(ABC):
 
 # ip адреса 10 компания в виде словаря
 employers_ids = {
-    108780: 'СКАУТ Разработчик Системы',
+    10259650: 'Softintermob LLC',
     3432635: 'ООО EVOS',
     9196211: 'JFoRecruitment',
     6000512: 'ООО Долсо',
@@ -49,21 +49,19 @@ class HH(Parser):
                        'per_page': 100}
         self.vacancies = []
 
-    def load_vacancies(self, keyword: str):
+    def load_vacancies(self, keyword: str = '', page_quantity: int = 2):
         """загружает данные c АПИ по определенным параметрам"""
         self.params['text'] = keyword
         self.params['employer_id'] = self.employers_data
-        while self.params.get('page') != 10:
+        while self.params.get('page') != page_quantity:
             response = requests.get(self.url, headers=self.__headers, params=self.params)
             response.raise_for_status()
             vacancy = response.json()['items']
             self.vacancies.extend(vacancy)
             self.params['page'] += 1
-            print(self.vacancies)
-        #return self.vacancies
 
     def parse_vacancies(self, vacancies: list[dict]) -> list[dict]:
-        """ Метод фильтрует с API по заданным ключам и возвращает список словарей """
+        """ Метод фильтрует с API по заданным ключам и возвращает список экз. класса """
 
         items = []
         for i in vacancies:
@@ -76,6 +74,12 @@ class HH(Parser):
             if salary_from is None:
                 salary_from = 0
 
+            if salary_dict:
+                salary_dict = i.get('salary')
+                currency = salary_dict.get('currency')
+            else:
+                currency = ''
+
             snippet_dict = i.get('snippet')
             snippet_requirement = snippet_dict.get('requirement')
             if snippet_requirement:
@@ -87,18 +91,15 @@ class HH(Parser):
             employer_id = employer.get('id')
             employer_name = employer.get('name')
 
-            vacancy_object = Vacancy(vacancy_id, vacancy_name, vacancy_url, salary_from, snippet_requirement,
+            vacancy_object = Vacancy(vacancy_id, vacancy_name, vacancy_url, salary_from, currency, snippet_requirement,
                                      employer_id, employer_name)
-
-
 
             items.append(vacancy_object)
         return items
 
-
 if __name__ == "__main__":
     hh_api = HH()
-    load_vac = hh_api.load_vacancies('a')
-    #parse = hh_api.parse_vacancies(load_vac)
-    #print(parse, sep='\n')
-
+    hh_api.load_vacancies('')
+    load_vac = hh_api.vacancies
+    parse = hh_api.parse_vacancies(load_vac)
+    print(*parse, sep='\n')
