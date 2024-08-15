@@ -1,6 +1,3 @@
-
-
-
 class DBManager():
     '''для организации подключения и вывода различной информации из БД по определенным критериям'''
 
@@ -16,7 +13,7 @@ class DBManager():
                             'GROUP BY employers.employer_name')
                 rows = cur.fetchall()
                 for i in rows:
-                    print(f"компания - {''.join(i[0])}, количество вакансий - {i[1]}")
+                    print(f"компания - {(i[0])}, количество вакансий - {i[1]}")
 
     def get_all_vacancies(self):
         ''''получает список всех вакансий с указанием названия компании,
@@ -50,7 +47,6 @@ class DBManager():
                             f"FROM vacancies "
                             f"WHERE currency = %s)", (currency, currency))
                 rows = cur.fetchall()
-
                 for i in rows:
                     print(f'{i} \n {"-" * 200}')
 
@@ -58,9 +54,9 @@ class DBManager():
         '''получает список всех вакансий, в названии которых содержатся переданные в метод слова, например python.'''
         with self.conn:
             with self.conn.cursor() as cur:
-                like_pattern = f'%{keyword}%'
+                like_pattern = f'%{keyword.lower()}%'
                 cur.execute(f"SELECT * FROM vacancies "
-                            f"WHERE vacancy_name LIKE %s", (like_pattern,))
+                            f"WHERE LOWER(vacancy_name) LIKE %s", (like_pattern,))
                 rows = cur.fetchall()
                 for i in rows:
                     print(f'{i} \n {"-" * 200}')
@@ -69,3 +65,8 @@ class DBManager():
         '''закрывает соединение с БД'''
         if self.conn:
             self.conn.close()
+
+
+# if __name__ == '__main__':
+#     db = DBManager(conn)
+#     db.get_vacancies_with_higher_salary('RUR')
