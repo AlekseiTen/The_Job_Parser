@@ -72,19 +72,19 @@ def drop_table(conn, table_name) -> None:
             print(f'из базы данных удалена таблица {table_name}')
 
 
-#if __name__ == '__main__':
-    # vacancies = [
-    #     Vacancy(1, "Developer", "http://example.com/job1", 60000,
-    #             "RUR", "Разработчик", '1', 'Яндекс'),
-    #     Vacancy(2, "Designer", "http://example.com/job2", 70000,
-    #             "USD", "Дизайнер", '1', 'Яндекс'),
-    #     Vacancy(3, "Blogger", "http://example.com/job3", 50000,
-    #             "EURO", "Блоггер", '2', 'Ютьюб'),
-    #     Vacancy(4, "Web", "http://example.com/job4", 80000,
-    #             "RUR", "Верстальщик", '3', 'ООО Верстка')
-    # ]
-    #
-    # conn_path = connect(path)
-    #create_tables(conn_path)
-    #loads_into_table(conn_path, vacancies)
-    # drop_table(conn_path,'employers')
+# if __name__ == '__main__':
+#     vacancies = [
+#         Vacancy(1, "Developer", "http://example.com/job1", 60000,
+#                 "RUR", "Разработчик", '1', 'Яндекс'),
+#         Vacancy(2, "Designer", "http://example.com/job2", 70000,
+#                 "USD", "Дизайнер", '1', 'Яндекс'),
+#         Vacancy(3, "Blogger", "http://example.com/job3", 50000,
+#                 "EURO", "Блоггер", '2', 'Ютьюб'),
+#         Vacancy(4, "Web", "http://example.com/job4", 80000,
+#                 "RUR", "Верстальщик", '3', 'ООО Верстка')
+#     ]
+#
+#     conn_path = connect(path)
+#     create_tables(conn_path)
+#     loads_into_table(conn_path, vacancies)
+#     drop_table(conn_path,'employers')

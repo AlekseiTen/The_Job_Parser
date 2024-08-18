@@ -42,16 +42,14 @@ class HH(Parser):
     def __init__(self):
         self.url = 'https://api.hh.ru/vacancies'
         self.__headers = {'User-Agent': 'HH-User-Agent'}
-        self.params = {'text': '',
-                       'employer_id': '',
+        self.params = {'employer_id': '',
                        'page': 0,
                        'only_with_salary': True,
                        'per_page': 100}
         self.vacancies = []
 
-    def load_vacancies(self, keyword: str = '', page_quantity: int = 2):
+    def load_vacancies(self, page_quantity: int = 2):
         """загружает данные c АПИ по определенным параметрам"""
-        self.params['text'] = keyword
         self.params['employer_id'] = self.employers_data
         while self.params.get('page') != page_quantity:
             response = requests.get(self.url, headers=self.__headers, params=self.params)

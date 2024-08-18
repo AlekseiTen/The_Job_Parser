@@ -20,7 +20,7 @@ def main():
     # Проверка на кол-во введеных страниц, не больше 20, иначе выведем 2 по умолчанию
     page_quantity = input('Введите количество запрашиваемых страниц от 1 до 20: ')
     if page_quantity.isdigit() and 0 < int(page_quantity) <= 20:
-        hh_api_instance.load_vacancies(page_quantity, int(page_quantity))
+        hh_api_instance.load_vacancies(int(page_quantity))
     else:
         print(f'вы ввели неверный параметр, по умолчанию будет загружено 2 страницы')
         time.sleep(1)
