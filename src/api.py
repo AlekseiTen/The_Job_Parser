@@ -13,11 +13,11 @@ class Parser(ABC):
         pass
 
     @abstractmethod
-    def load_vacancies(self, keyword):
+    def load_vacancies(self):
         pass
 
 
-# ip адреса 10 компания в виде словаря
+# ip адреса 10 компания в виде словаря можно и в виде списка
 employers_ids = {
     10259650: 'Softintermob LLC',
     3432635: 'ООО EVOS',
@@ -31,6 +31,7 @@ employers_ids = {
     1740: 'Яндекс'
 }
 
+#employers_ids = [10259650, 3432635, 9196211, 6000512, 656481, 1577237, 5879545, 10882430, 2437802, 1740]
 
 class HH(Parser):
     """
@@ -48,9 +49,11 @@ class HH(Parser):
                        'per_page': 100}
         self.vacancies = []
 
-    def load_vacancies(self, page_quantity: int = 2):
+    def load_vacancies(self, page_quantity: int = 2): # page_quantity задаем от 0  до 20
         """загружает данные c АПИ по определенным параметрам"""
+
         self.params['employer_id'] = self.employers_data
+
         while self.params.get('page') != page_quantity:
             response = requests.get(self.url, headers=self.__headers, params=self.params)
             response.raise_for_status()
@@ -97,7 +100,7 @@ class HH(Parser):
 
 if __name__ == "__main__":
     hh_api = HH()
-    hh_api.load_vacancies('')
+    hh_api.load_vacancies()
     load_vac = hh_api.vacancies
     parse = hh_api.parse_vacancies(load_vac)
     print(*parse, sep='\n')
